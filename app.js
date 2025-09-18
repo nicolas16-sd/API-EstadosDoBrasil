@@ -56,12 +56,31 @@ app.get('/v1/estado/regiao/:id', function(request, response){
     console.log(id)
 })
 
+//getEstadoBySigla
 app.get('/v1/estado/:uf', function(req, res){
-    let estado = dados.getEstadoBySigla()
+    //Paga a sigla passada na URL
+    let uf = req.params.uf.toUpperCase() //Formatação para letras maiúsculas
 
+    //Chamando a função "getEstadoBySigla" 
+    let estado = dados.getEstadoBySigla(uf)
+
+    //devolvendo a resposta
     res.status(estado.status_code)
     res.json(estado)
 })
+
+//getCapitalBySigla
+app.get('v1/capital/:uf', function(request, response){
+    let uf = request.params.uf.toUpperCase()
+
+    let capital = dados.getCapitalBySigla(uf)
+
+    response.status(capital.status_code)
+    response.json(capital)
+})
+
+//getEstadosByRegiao
+app.get()
 
 //Start da Api
 app.listen(PORT, function(){
