@@ -14,6 +14,7 @@
 
 const { request } = require('express')
 const dados = require('./estados_cidades.js')
+const { json } = require('body-parser')
 
 const MESSAGE_ERRO = {status: false, status_code: 500, development: 'Nicolas dos Santos'}
 
@@ -86,7 +87,9 @@ const getEstadosByRegiao = function(regiao){
     //Se o filtro identificar que a região tem uma quantidade de estados maior que 0 ela retorna a mensagem de sucesso
     if(estados.length > 0){
         message.resultados = estados.map(estado => ({
-            uf: estado.sigla
+            regiao: estado.regiao,
+            uf: estado.sigla,
+            descricao: estado.nome
         }))
         return message
     } else {
@@ -97,19 +100,50 @@ const getEstadosByRegiao = function(regiao){
 
 //Retorna uma lista de estados referente as capitais do país
 const getVerifyCapitaisDoPais = function(){
+    let message = {status: true, status_code: 200, development: 'Nicolas dos Santos', capitais: []}
 
+    dados.listaDeEstados.estados.forEach(function (item){
+        if(item.capital_pais){
+            let json = {}
+
+            json.capital_atual = item.capital_pais.capital
+            json.uf = item.sigla
+            json.descricao = item.nome
+            json.capital = item.capital
+            json.regiao = item.regiao
+            json.capital_pais_ano_inicio = item.capital_pais.ano_inicio
+        }
+    })
 }
 
 //Retorna uma lista de cidades pesquisando pela sigla do estado
 const getCidadesBySigla = function(sigla){
+    let message = {status: true, status_code: 200, development: 'Nicolas dos Santos'}
 
+    const cidades = dados.listaDeEstados.estados.find(item => item.sigla === sigla)
+
+
+    if(cidades){
+        message.uf = cidades.sigla,
+        message.descricao = cidades.nome,
+
+        //Criação do atributo "quantidade_cidades"
+        message.quantidade_cidades = cidades.cidades.length,
+        //Usando o map para criar uma nova estrutura
+        message.cidades = cidades.cidades.map(cidades => cidades.nome)
+        return message
+    } else {
+        return MESSAGE_ERRO
+    }
 }
 
-console.log(getEstadosByRegiao("Sudeste"))
+console.log(getCidadesBySigla("SP"))
 
 module.exports = {
     getAllEstados,
     getEstadoBySigla,
     getCapitalBySigla,
-    getEstadosByRegiao
+    getEstadosByRegiao,
+    getVerifyCapitaisDoPais,
+    getCidadesBySigla
 }

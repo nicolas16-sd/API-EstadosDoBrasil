@@ -80,7 +80,27 @@ app.get('v1/capital/:uf', function(request, response){
 })
 
 //getEstadosByRegiao
-app.get()
+app.get('v1/estado/:regiao', function(request, response){
+    let regiao = request.params.regiao
+
+    let estado = dados.getEstadosByRegiao(regiao)
+
+    response.status(estado.status_code)
+    response.json(estado)
+})
+
+//getVerifyCapitalPais
+
+
+//getCidadesBySigla
+app.get('v1/cidades/:uf', function(request, response){
+    let uf = request.params.uf.toUpperCase()
+
+    let cidades = dados.getCidadesBySigla(uf)
+
+    response.status(cidades.status_code)
+    response.json(cidades)
+})
 
 //Start da Api
 app.listen(PORT, function(){
