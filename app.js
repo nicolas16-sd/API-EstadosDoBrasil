@@ -90,6 +90,12 @@ app.get('v1/estado/:regiao', function(request, response){
 })
 
 //getVerifyCapitalPais
+app.get('v1/capitais', function(request, response){
+    let capitais = dados.getVerifyCapitaisDoPais()
+
+    response.status(capitais.status_code)
+    response.json(capitais)
+})
 
 
 //getCidadesBySigla

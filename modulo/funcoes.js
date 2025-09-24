@@ -112,6 +112,7 @@ const getVerifyCapitaisDoPais = function(){
             json.capital = item.capital
             json.regiao = item.regiao
             json.capital_pais_ano_inicio = item.capital_pais.ano_inicio
+            json.capital_pais_ano_termino = item.capital_pais.ano_fim
         }
     })
 }
@@ -129,6 +130,7 @@ const getCidadesBySigla = function(sigla){
 
         //Criação do atributo "quantidade_cidades"
         message.quantidade_cidades = cidades.cidades.length,
+
         //Usando o map para criar uma nova estrutura
         message.cidades = cidades.cidades.map(cidades => cidades.nome)
         return message
@@ -136,8 +138,6 @@ const getCidadesBySigla = function(sigla){
         return MESSAGE_ERRO
     }
 }
-
-console.log(getCidadesBySigla("SP"))
 
 module.exports = {
     getAllEstados,
